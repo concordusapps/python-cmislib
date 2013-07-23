@@ -20,7 +20,8 @@
 Module containing handy utility functions.
 """
 import re
-import iso8601
+import dateutil
+from dateutil.parser import parse as parseDate
 import logging
 import datetime
 from cmislib.domain import CmisId, Document, Folder
@@ -117,7 +118,7 @@ def parseDateTimeValue(value):
     Utility function to return a datetime from a string.
     """
     if type(value) == str:
-        return iso8601.parse_date(value)
+        return parseDate(value)
     elif type(value) == int:
         return datetime.datetime.fromtimestamp(value/1000)
     else:

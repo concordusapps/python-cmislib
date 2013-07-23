@@ -19,7 +19,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = '0.6'
+version = '0.6-py3k'
 
 
 def read(fname):
@@ -31,7 +31,7 @@ setup(
     description='Apache Chemistry CMIS client library for Python',
     version=version,
     install_requires=[
-        'iso8601',
+        'python-dateutil',
         'httplib2'],
     author='Apache Chemistry Project',
     author_email='dev@chemistry.apache.org',
