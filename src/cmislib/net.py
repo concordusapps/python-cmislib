@@ -26,6 +26,7 @@ from urllib.parse import urlencode
 import logging
 import httplib2
 
+
 class RESTService(object):
 
     """
@@ -56,7 +57,7 @@ class RESTService(object):
             else:
                 url = url + '?' + urlencode(kwargs)
 
-        self.logger.debug('About to do a GET on:' + url)
+        self.logger.debug('About to do a GET on:'.format(url))
 
         h = httplib2.Http()
         h.add_credentials(username, password)
