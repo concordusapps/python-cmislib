@@ -1,0 +1,6 @@
+# Python 3 object cache folder
+__pycache__
+
+# Python 2 object files
+*.pyc
+*.pyo
