@@ -22,7 +22,7 @@ not know anything about CMIS or do anything special with regard to the
 response it receives.
 """
 
-from urllib import urlencode
+from urllib.parse import urlencode
 import logging
 import httplib2
 

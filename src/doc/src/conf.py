@@ -58,8 +58,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Apache Chemistry cmislib'
-copyright = u'2013, Apache Software Foundation'
+project = 'Apache Chemistry cmislib'
+copyright = '2013, Apache Software Foundation'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -201,8 +201,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'cmislib.tex', u'Apache Chemistry cmislib Documentation',
-   u'Jeff Potts', 'manual'),
+  ('index', 'cmislib.tex', 'Apache Chemistry cmislib Documentation',
+   'Jeff Potts', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -231,8 +231,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'cmislib', u'Apache Chemistry cmislib Documentation',
-     [u'Jeff Potts'], 1)
+    ('index', 'cmislib', 'Apache Chemistry cmislib Documentation',
+     ['Jeff Potts'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -245,8 +245,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'cmislib', u'Apache Chemistry cmislib Documentation',
-   u'Jeff Potts', 'cmislib', 'Python client library for CMIS',
+  ('index', 'cmislib', 'Apache Chemistry cmislib Documentation',
+   'Jeff Potts', 'cmislib', 'Python client library for CMIS',
    'Miscellaneous'),
 ]
 
@@ -263,10 +263,10 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'Apache Chemistry cmislib Documentation'
-epub_author = u'Jeff Potts'
-epub_publisher = u'Jeff Potts'
-epub_copyright = u'2013, Apache Software Foundation'
+epub_title = 'Apache Chemistry cmislib Documentation'
+epub_author = 'Jeff Potts'
+epub_publisher = 'Jeff Potts'
+epub_copyright = '2013, Apache Software Foundation'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

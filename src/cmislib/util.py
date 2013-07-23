@@ -37,7 +37,7 @@ def multiple_replace(aDict, text):
     """
 
     # Create a regular expression  from the dictionary keys
-    regex = re.compile("(%s)" % "|".join(map(re.escape, aDict.keys())))
+    regex = re.compile("(%s)" % "|".join(map(re.escape, list(aDict.keys()))))
 
     # For each match, look-up corresponding value in dictionary
     return regex.sub(lambda mo: aDict[mo.string[mo.start():mo.end()]], text)

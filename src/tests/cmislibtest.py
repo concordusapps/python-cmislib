@@ -32,7 +32,7 @@ from cmislib.exceptions import \
 from cmislib import messages
 import os
 from time import sleep, time
-import settings
+from . import settings
 
 ## Fix test file paths in case test is launched using nosetests
 my_dir = os.path.dirname(os.path.abspath(__file__))
@@ -65,7 +65,7 @@ class CmisTestBase(unittest.TestCase):
         try:
             self._testFolder.deleteTree()
         except NotSupportedException:
-            print "Couldn't delete test folder because deleteTree is not supported"
+            print("Couldn't delete test folder because deleteTree is not supported")
 
 
 class CmisClientTest(unittest.TestCase):
@@ -197,7 +197,7 @@ class QueryTest(CmisTestBase):
             found = isInResultSet(resultSet, self._testContent2)
             if not found:
                 maxTries -= 1
-                print 'Not found...sleeping for 10 secs. Remaining tries:%d' % maxTries
+                print('Not found...sleeping for 10 secs. Remaining tries:%d' % maxTries)
                 sleep(settings.FULL_TEXT_WAIT)
         self.assertTrue(found)
 
@@ -216,7 +216,7 @@ class QueryTest(CmisTestBase):
             found = isInResultSet(resultSet, self._testContent2)
             if not found:
                 maxTries -= 1
-                print 'Not found...sleeping for 10 secs. Remaining tries:%d' % maxTries
+                print('Not found...sleeping for 10 secs. Remaining tries:%d' % maxTries)
                 sleep(10)
         self.assertTrue(found)
 
@@ -288,7 +288,7 @@ class RepositoryTest(CmisTestBase):
     # CMIS-279
     def testCreateDocumentUnicode(self):
         """Create a new doc with unicode characters in the name"""
-        documentName = u'abc cdeöäüß%§-_caféè.txt'
+        documentName = 'abc cdeöäüß%§-_caféè.txt'
         newDoc = self._repo.createDocument(documentName, parentFolder=self._testFolder)
         self.assertEquals(documentName, newDoc.getName())
 
@@ -310,18 +310,18 @@ class RepositoryTest(CmisTestBase):
         doc10 = self._testFolder.createDocument(fileName, contentFile=f, properties=props)
         doc10Id = doc10.getObjectId()
         if not doc10.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc10.checkout()
         doc11 = pwc.checkin(major='false')  # checkin a minor version, 1.1
         if not doc11.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc11.checkout()
         doc20 = pwc.checkin()  # checkin a major version, 2.0
         doc20Id = doc20.getObjectId()
         if not doc20.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc20.checkout()
         doc21 = pwc.checkin(major='false')  # checkin a minor version, 2.1
@@ -378,7 +378,7 @@ class RepositoryTest(CmisTestBase):
         """Tests the repository's unfiled collection"""
 
         if not self._repo.getCapabilities()['Unfiling']:
-            print 'Repo does not support unfiling, skipping'
+            print('Repo does not support unfiling, skipping')
             return
 
         # create a test folder and test doc
@@ -390,7 +390,7 @@ class RepositoryTest(CmisTestBase):
             rs = self._repo.getUnfiledDocs()
             self.assertFalse(isInResultSet(rs, newDoc))
         except NotSupportedException:
-            print 'This repository does not support read access to the unfiled collection...skipping'
+            print('This repository does not support read access to the unfiled collection...skipping')
             return
 
         # delete the test folder and tell it to unfile the testdoc
@@ -579,42 +579,42 @@ class FolderTest(CmisTestBase):
         searchFolder = self._repo.getObjectByPath(subFolderPath,
                         filter='cmis:objectId,cmis:objectTypeId,cmis:baseTypeId')
         self.assertEquals(subFolder.getObjectId(), searchFolder.getObjectId())
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:baseTypeId'))
+        self.assertTrue('cmis:objectId' in searchFolder.getProperties())
+        self.assertTrue('cmis:objectTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:baseTypeId' in searchFolder.getProperties())
 
         # test when used with getObjectByPath + reload
         searchFolder = self._repo.getObjectByPath(subFolderPath,
                         filter='cmis:objectId,cmis:objectTypeId,cmis:baseTypeId')
         searchFolder.reload()
         self.assertEquals(subFolder.getObjectId(), searchFolder.getObjectId())
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:baseTypeId'))
+        self.assertTrue('cmis:objectId' in searchFolder.getProperties())
+        self.assertTrue('cmis:objectTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:baseTypeId' in searchFolder.getProperties())
 
         # test when used with getObject
         searchFolder = self._repo.getObject(subFolder.getObjectId(),
                         filter='cmis:objectId,cmis:objectTypeId,cmis:baseTypeId')
         self.assertEquals(subFolder.getObjectId(), searchFolder.getObjectId())
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:baseTypeId'))
+        self.assertTrue('cmis:objectId' in searchFolder.getProperties())
+        self.assertTrue('cmis:objectTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:baseTypeId' in searchFolder.getProperties())
 
         # test when used with getObject + reload
         searchFolder = self._repo.getObject(subFolder.getObjectId(),
                         filter='cmis:objectId,cmis:objectTypeId,cmis:baseTypeId')
         searchFolder.reload()
         self.assertEquals(subFolder.getObjectId(), searchFolder.getObjectId())
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:baseTypeId'))
+        self.assertTrue('cmis:objectId' in searchFolder.getProperties())
+        self.assertTrue('cmis:objectTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:baseTypeId' in searchFolder.getProperties())
 
         # test that you can do a reload with a reset filter
         searchFolder.reload(filter='*')
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:objectTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:baseTypeId'))
-        self.assertTrue(searchFolder.getProperties().has_key('cmis:name'))
+        self.assertTrue('cmis:objectId' in searchFolder.getProperties())
+        self.assertTrue('cmis:objectTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:baseTypeId' in searchFolder.getProperties())
+        self.assertTrue('cmis:name' in searchFolder.getProperties())
 
     def testUpdateProperties(self):
         """Create a test folder, then update its properties"""
@@ -648,7 +648,7 @@ class FolderTest(CmisTestBase):
     def testAddObject(self):
         """Add an existing object to another folder"""
         if not self._repo.getCapabilities()['Multifiling']:
-            print 'This repository does not allow multifiling, skipping'
+            print('This repository does not allow multifiling, skipping')
             return
 
         subFolder1 = self._testFolder.createFolder('sub1')
@@ -663,7 +663,7 @@ class FolderTest(CmisTestBase):
     def testRemoveObject(self):
         """Remove an existing object from a secondary folder"""
         if not self._repo.getCapabilities()['Unfiling']:
-            print 'This repository does not allow unfiling, skipping'
+            print('This repository does not allow unfiling, skipping')
             return
 
         subFolder1 = self._testFolder.createFolder('sub1')
@@ -729,7 +729,7 @@ class ChangeEntryTest(CmisTestBase):
 
         # need to check changes capability
         if not self._repo.capabilities['Changes']:
-            print messages.NO_CHANGE_LOG_SUPPORT
+            print(messages.NO_CHANGE_LOG_SUPPORT)
             return
 
         # at least one change should have been made due to the creation of the
@@ -747,12 +747,12 @@ class ChangeEntryTest(CmisTestBase):
 
         # need to check changes capability
         if not self._repo.capabilities['Changes']:
-            print messages.NO_CHANGE_LOG_SUPPORT
+            print(messages.NO_CHANGE_LOG_SUPPORT)
             return
 
         # need to check ACL capability
         if not self._repo.capabilities['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
 
         # need to test once with includeACL set to true
@@ -761,7 +761,7 @@ class ChangeEntryTest(CmisTestBase):
         changeEntry = rs[0]
         acl = changeEntry.getACL()
         self.assertTrue(acl)
-        for entry in acl.getEntries().values():
+        for entry in list(acl.getEntries().values()):
             self.assertTrue(entry.principalId)
             self.assertTrue(entry.permissions)
 
@@ -771,7 +771,7 @@ class ChangeEntryTest(CmisTestBase):
         changeEntry = rs[0]
         acl = changeEntry.getACL()
         self.assertTrue(acl)
-        for entry in acl.getEntries().values():
+        for entry in list(acl.getEntries().values()):
             self.assertTrue(entry.principalId)
             self.assertTrue(entry.permissions)
 
@@ -782,7 +782,7 @@ class ChangeEntryTest(CmisTestBase):
         # need to check changes capability
         changeCap = self._repo.capabilities['Changes']
         if not changeCap:
-            print messages.NO_CHANGE_LOG_SUPPORT
+            print(messages.NO_CHANGE_LOG_SUPPORT)
             return
 
         # need to test once without includeProperties set. the objectID should be there
@@ -809,7 +809,7 @@ class DocumentTest(CmisTestBase):
         props = {'cmis:objectTypeId': settings.VERSIONABLE_TYPE_ID}        
         newDoc = self._testFolder.createDocument('testDocument', properties=props)
         if not newDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwcDoc = newDoc.checkout()
         try:
@@ -830,7 +830,7 @@ class DocumentTest(CmisTestBase):
         contentFile.close()
         self.assertEquals(testFilename, testDoc.getName())
         if not testDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwcDoc = testDoc.checkout()
 
@@ -853,7 +853,7 @@ class DocumentTest(CmisTestBase):
         contentFile.close()
         self.assertEquals(testFilename, testDoc.getName())
         if not testDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwcDoc = testDoc.checkout()
 
@@ -870,7 +870,7 @@ class DocumentTest(CmisTestBase):
     def testCheckinAfterGetPWC(self):
         """Create a document in a test folder, check it out, call getPWC, then checkin"""
         if not self._repo.getCapabilities()['PWCUpdatable'] == True:
-            print 'Repository does not support PWCUpdatable, skipping'
+            print('Repository does not support PWCUpdatable, skipping')
             return
 
         testFilename = settings.TEST_BINARY_1.split('/')[-1]
@@ -882,7 +882,7 @@ class DocumentTest(CmisTestBase):
         # Alfresco has a bug where if you get the PWC this way
         # the checkin will not be successful
         if not testDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         testDoc.checkout()
         pwcDoc = testDoc.getPrivateWorkingCopy()
@@ -902,7 +902,7 @@ class DocumentTest(CmisTestBase):
         props = {'cmis:objectTypeId': settings.VERSIONABLE_TYPE_ID}        
         newDoc = self._testFolder.createDocument('testDocument', properties=props)
         if not newDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwcDoc = newDoc.checkout()
         try:
@@ -933,18 +933,18 @@ class DocumentTest(CmisTestBase):
         props = {'cmis:objectTypeId': settings.VERSIONABLE_TYPE_ID}        
         doc10 = self._testFolder.createDocument(fileName, contentFile=f, properties=props)
         if not doc10.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc10.checkout()
         doc11 = pwc.checkin(major='false')  # checkin a minor version, 1.1
         if not doc11.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc11.checkout()
         doc20 = pwc.checkin()  # checkin a major version, 2.0
         doc20Id = doc20.getObjectId()
         if not doc20.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc20.checkout()
         doc21 = pwc.checkin(major='false')  # checkin a minor version, 2.1
@@ -963,12 +963,12 @@ class DocumentTest(CmisTestBase):
         props = {'cmis:objectTypeId': settings.VERSIONABLE_TYPE_ID}        
         doc10 = self._testFolder.createDocument(fileName, contentFile=f, properties=props)
         if not doc10.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc10.checkout()
         doc11 = pwc.checkin(major='false')  # checkin a minor version, 1.1
         if not doc11.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc11.checkout()
         doc20 = pwc.checkin()  # checkin a major version, 2.0
@@ -976,7 +976,7 @@ class DocumentTest(CmisTestBase):
         doc20.reload()
         doc20Label = doc20.getProperties()['cmis:versionLabel']
         if not doc20.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc20.checkout()
         doc21 = pwc.checkin(major='false')  # checkin a minor version, 2.1
@@ -1014,7 +1014,7 @@ class DocumentTest(CmisTestBase):
     def testSetContentStreamPWC(self):
         """Set the content stream on the PWC"""
         if self._repo.getCapabilities()['ContentStreamUpdatability'] == 'none':
-            print 'This repository does not allow content stream updates, skipping'
+            print('This repository does not allow content stream updates, skipping')
             return
 
         testFile1 = settings.TEST_BINARY_1
@@ -1041,11 +1041,11 @@ class DocumentTest(CmisTestBase):
         self.assertEquals(testFile1Size, os.path.getsize(exportFile1))
 
         # checkout the file
-        if newDoc.allowableActions.has_key('canCheckOut') and \
+        if 'canCheckOut' in newDoc.allowableActions and \
                 newDoc.allowableActions['canCheckOut'] == True:
             pass
         else:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = newDoc.checkout()
 
@@ -1072,7 +1072,7 @@ class DocumentTest(CmisTestBase):
     def testSetContentStreamPWCMimeType(self):
         """Check the mimetype after the PWC checkin"""
         if self._repo.getCapabilities()['ContentStreamUpdatability'] == 'none':
-            print 'This repository does not allow content stream updates, skipping'
+            print('This repository does not allow content stream updates, skipping')
             return
 
         testFile1 = settings.TEST_BINARY_1
@@ -1087,7 +1087,7 @@ class DocumentTest(CmisTestBase):
 
         # checkout the file
         if not newDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = newDoc.checkout()
 
@@ -1107,7 +1107,7 @@ class DocumentTest(CmisTestBase):
     def testSetContentStreamDoc(self):
         """Set the content stream on a doc that's not checked out"""
         if self._repo.getCapabilities()['ContentStreamUpdatability'] != 'anytime':
-            print 'This repository does not allow content stream updates on the doc, skipping'
+            print('This repository does not allow content stream updates on the doc, skipping')
             return
 
         testFile1 = settings.TEST_BINARY_1
@@ -1154,10 +1154,10 @@ class DocumentTest(CmisTestBase):
     def testDeleteContentStreamPWC(self):
         """Delete the content stream of a PWC"""
         if self._repo.getCapabilities()['ContentStreamUpdatability'] == 'none':
-            print 'This repository does not allow content stream updates, skipping'
+            print('This repository does not allow content stream updates, skipping')
             return
         if not self._repo.getCapabilities()['PWCUpdatable'] == True:
-            print 'Repository does not support PWCUpdatable, skipping'
+            print('Repository does not support PWCUpdatable, skipping')
             return
 
         # create a test document
@@ -1167,7 +1167,7 @@ class DocumentTest(CmisTestBase):
         newDoc = self._testFolder.createDocument(fileName, contentFile=contentFile, properties=props)
         contentFile.close()
         if not newDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = newDoc.checkout()
         pwc.deleteContentStream()
@@ -1238,12 +1238,12 @@ class DocumentTest(CmisTestBase):
         props = {'cmis:objectTypeId': settings.VERSIONABLE_TYPE_ID}        
         testDoc = self._testFolder.createDocument('testdoc', properties=props)
         if not testDoc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = testDoc.checkout()
         doc = pwc.checkin()  # 2.0
         if not doc.allowableActions['canCheckOut']:
-            print 'The test doc cannot be checked out...skipping'
+            print('The test doc cannot be checked out...skipping')
             return
         pwc = doc.checkout()
         doc = pwc.checkin()  # 3.0
@@ -1275,7 +1275,7 @@ class DocumentTest(CmisTestBase):
     def testGetObjectParentsMultiple(self):
         """Gets all parents of a multi-filed object"""
         if not self._repo.getCapabilities()['Multifiling']:
-            print 'This repository does not allow multifiling, skipping'
+            print('This repository does not allow multifiling, skipping')
             return
 
         subFolder1 = self._testFolder.createFolder('sub1')
@@ -1300,18 +1300,18 @@ class DocumentTest(CmisTestBase):
 
     def testRenditions(self):
         """Get the renditions for a document"""
-        if not self._repo.getCapabilities().has_key('Renditions'):
-            print 'Repo does not support unfiling, skipping'
+        if 'Renditions' not in self._repo.getCapabilities():
+            print('Repo does not support unfiling, skipping')
             return
 
         testDoc = self._testFolder.createDocumentFromString('testdoc.txt', contentString='test', contentType='text/plain')
         sleep(settings.FULL_TEXT_WAIT)
-        if (testDoc.getAllowableActions().has_key('canGetRenditions') and
+        if ('canGetRenditions' in testDoc.getAllowableActions() and
             testDoc.getAllowableActions()['canGetRenditions'] == True):
             rends = testDoc.getRenditions()
             self.assertTrue(len(rends) >= 1)
         else:
-            print 'Test doc does not have rendition, skipping'
+            print('Test doc does not have rendition, skipping')
             return
 
 
@@ -1376,7 +1376,7 @@ class TypeTest(unittest.TestCase):
         repo = cmisClient.getDefaultRepository()
         docTypeDef = repo.getTypeDefinition('cmis:document')
         self.assertEquals('cmis:document', docTypeDef.getTypeId())
-        props = docTypeDef.getProperties().values()
+        props = list(docTypeDef.getProperties().values())
         self.assertTrue(len(props) > 0)
         for prop in props:
             if prop.queryable:
@@ -1393,54 +1393,54 @@ class ACLTest(CmisTestBase):
     def testSupportedPermissions(self):
         """Test the value of supported permissions enum"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         self.assertTrue(self._repo.getSupportedPermissions() in ['basic', 'repository', 'both'])
 
     def testPermissionDefinitions(self):
         """Test the list of permission definitions"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         supportedPerms = self._repo.getPermissionDefinitions()
-        self.assertTrue(supportedPerms.has_key('cmis:write'))
+        self.assertTrue('cmis:write' in supportedPerms)
 
     def testPermissionMap(self):
         """Test the permission mapping"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         permMap = self._repo.getPermissionMap()
-        self.assertTrue(permMap.has_key('canGetProperties.Object'))
+        self.assertTrue('canGetProperties.Object' in permMap)
         self.assertTrue(len(permMap['canGetProperties.Object']) > 0)
 
     def testPropagation(self):
         """Test the propagation setting"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         self.assertTrue(self._repo.getPropagation() in ['objectonly', 'propagate', 'repositorydetermined'])
 
     def testGetObjectACL(self):
         """Test getting an object's ACL"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         acl = self._testFolder.getACL()
-        for entry in acl.getEntries().values():
+        for entry in list(acl.getEntries().values()):
             self.assertTrue(entry.principalId)
             self.assertTrue(entry.permissions)
 
     def testApplyACL(self):
         """Test updating an object's ACL"""
         if not self._repo.getCapabilities()['ACL']:
-            print messages.NO_ACL_SUPPORT
+            print(messages.NO_ACL_SUPPORT)
             return
         if not self._repo.getCapabilities()['ACL'] == 'manage':
-            print 'Repository does not support manage ACL'
+            print('Repository does not support manage ACL')
             return
         if not self._repo.getSupportedPermissions() in ['both', 'basic']:
-            print 'Repository needs to support either both or basic permissions for this test'
+            print('Repository needs to support either both or basic permissions for this test')
             return
         acl = self._testFolder.getACL()        
         acl.addEntry(settings.TEST_PRINCIPAL_ID, 'cmis:write', 'true')
@@ -1448,7 +1448,7 @@ class ACLTest(CmisTestBase):
         # would be good to check that the permission we get back is what we set
         # but at least one server (Alf) appears to map the basic perm to a
         # repository-specific perm
-        self.assertTrue(acl.getEntries().has_key(settings.TEST_PRINCIPAL_ID))
+        self.assertTrue(settings.TEST_PRINCIPAL_ID in acl.getEntries())
 
 
 def isInCollection(collection, targetDoc):
