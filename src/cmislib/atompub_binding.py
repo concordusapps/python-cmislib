@@ -40,6 +40,7 @@ import io
 import logging
 from xml.dom import minidom
 from .util import multiple_replace, parsePropValue, parseBoolValue, toCMISValue
+from base64 import b64encode, b64decode
 
 moduleLogger = logging.getLogger('cmislib.atompub_binding')
 
@@ -4067,12 +4068,12 @@ def getEntryXmlDoc(repo=None, objectTypeId=None, properties=None, contentFile=No
         # present, so it seems reasonable to use CMIS_RA content for now
         # and encode everything.
 
-        fileData = contentFile.read().encode("base64")
+        fileData = b64encode(contentFile.read())
         mediaElement = entryXmlDoc.createElementNS(CMISRA_NS, 'cmisra:mediatype')
         mediaElementText = entryXmlDoc.createTextNode(mimetype)
         mediaElement.appendChild(mediaElementText)
         base64Element = entryXmlDoc.createElementNS(CMISRA_NS, 'cmisra:base64')
-        base64ElementText = entryXmlDoc.createTextNode(fileData)
+        base64ElementText = entryXmlDoc.createTextNode(fileData.decode('utf-8'))
         base64Element.appendChild(base64ElementText)
         contentElement = entryXmlDoc.createElementNS(CMISRA_NS, 'cmisra:content')
         contentElement.appendChild(mediaElement)
